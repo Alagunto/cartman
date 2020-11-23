@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  cartman:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/go/src/cartman/data
+    ports:
+      - 1984:1984

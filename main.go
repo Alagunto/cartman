@@ -20,13 +20,15 @@ func main() {
 	})
 
 	b.Handle("/start@" + b.Me.Username, func(m *tb.Message) {
-		b.Reply(m, src.GetChatToken(m.Chat.ID))
+		b.Reply(m, src.GetTokenForChat(m.Chat.ID))
 	})
 
 	err := b.SetCommands([]tb.Command{{Text: "start", Description: "Активировать для чата и получить токен"}})
 	if err != nil {
 		panic(err)
 	}
+
+	go src.StartHttpServer(b)
 
 	b.Start()
 }

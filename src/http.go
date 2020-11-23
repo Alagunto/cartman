@@ -1,14 +1,32 @@
 package src
 
 import (
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/sirupsen/logrus"
 	"gopkg.in/tucnak/telebot.v2"
 	"net/http"
-	"github.com/labstack/echo/v4"
 )
 
-func StartHttpServer(bot *telebot.Bot) {
+var bot *telebot.Bot
+
+func send(c echo.Context) error {
+	token := c.Param("token")
+	message := c.QueryParam("message")
+
+
+	chat := &telebot.Chat{ID:GetChatByToken(token)}
+
+	_, err := bot.Send(chat, message)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.String(http.StatusOK, "Ok bitch, paper in de flight")
+}
+
+func StartHttpServer(b *telebot.Bot) {
+	bot = b
+
 	e := echo.New()
 
 	// Middleware
@@ -16,8 +34,8 @@ func StartHttpServer(bot *telebot.Bot) {
 	e.Use(middleware.Recover())
 
 	// Routes
-	e.GET("/", hello)
+	e.GET("/:token/send", send)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":1984"))
 }

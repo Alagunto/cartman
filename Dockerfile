@@ -8,4 +8,4 @@ WORKDIR /go/src/cartman
 
 RUN go get
 
-CMD go run /main.go
+CMD go run main.go
