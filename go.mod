@@ -1,4 +1,4 @@
-module cartman
+module github.com/Alagunto/cartman
 
 go 1.15
 
